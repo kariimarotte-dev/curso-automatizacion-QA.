@@ -67,14 +67,23 @@ class SauceInventoryPage:
     def contar_productos_visibles(self):
         return len(self.driver.find_elements(*self.inventory_items))
 
-    def obtener_datos_primer_producto(self):
-        nombre = self.driver.find_element(*self.item_name).text
-        precio = self.driver.find_element(*self.item_price).text
-        return nombre, precio
+def obtener_datos_primer_producto(self):
+    productos = self.driver.find_elements(*self.inventory_items)
+    
+    primer_producto = productos[0]
+    
+    nombre = primer_producto.find_element(By.CLASS_NAME, "inventory_item_name").text
+    precio = primer_producto.find_element(By.CLASS_NAME, "inventory_item_price").text
+    
+    return nombre, precio
 
-    def elementos_interfaz_presentes(self):
-        # Valida la existencia de elementos importantes para la Clase 8
+def elementos_interfaz_presentes(self):
+    try:
         carrito = self.driver.find_element(*self.shopping_cart).is_displayed()
         filtro = self.driver.find_element(*self.filter_dropdown).is_displayed()
         boton_agregar = self.driver.find_element(*self.add_to_cart_btn).is_displayed()
         return carrito and filtro and boton_agregar
+    except:
+        return False
+
+  
