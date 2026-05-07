@@ -137,7 +137,6 @@ dmypy.json
 # Screenshots and videos (test artifacts)
 screenshots/
 videos/
-reports/
 
 # OS specific
 .DS_Store
