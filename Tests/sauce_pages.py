@@ -85,5 +85,47 @@ class SauceInventoryPage:
             return carrito and filtro and boton_agregar
         except:
             return False
+    def aplicar_filtro(self, opcion):
+        filtro = self.driver.find_element(*self.filter_dropdown)
+        filtro.click()
+        filtro.find_element(By.CSS_SELECTOR, f"option[value='{opcion}']").click()  
+    def agregar_primer_producto_al_carrito(self):
+        productos = self.driver.find_elements(*self.inventory_items)
+        primer_producto = productos[0]
+        primer_producto.find_element(*self.add_to_cart_btn).click()
+    def ir_al_carrito(self):
+        self.driver.find_element(*self.shopping_cart).click()
 
-  
+class SauceCartPage:
+    def __init__(self, driver):
+        self.driver = driver
+        
+        # Selectores de la página de Carrito
+        self.cart_items = (By.CLASS_NAME, "cart_item")
+        self.checkout_button = (By.ID, "checkout") 
+        self.continue_shopping_button = (By.ID, "continue-shopping")    
+    def contar_productos_en_carrito(self):
+        return len(self.driver.find_elements(*self.cart_items))
+
+    def realizar_checkout(self):
+        self.driver.find_element(*self.checkout_button).click()    
+    def continuar_comprando(self):
+        self.driver.find_element(*self.continue_shopping_button).click()  
+    def obtener_nombres_productos(self):
+        productos = self.driver.find_elements(*self.inventory_items)
+        nombres = [producto.find_element(By.CLASS_NAME, "inventory_item_name").text for producto in productos]
+        return nombres 
+    def obtener_cantidad_en_carrito(self):
+            carrito = self.driver.find_element(*self.shopping_cart)
+            cantidad_texto = carrito.text
+            if cantidad_texto.isdigit():
+                return int(cantidad_texto)
+            return 0
+    def obtener_productos_en_carrito(self):  
+        productos = self.driver.find_elements(*self.cart_items)
+        detalles_productos = []
+        for producto in productos:
+            nombre = producto.find_element(By.CLASS_NAME, "inventory_item_name").text
+            precio = producto.find_element(By.CLASS_NAME, "inventory_item_price").text
+            detalles_productos.append((nombre, precio))
+        return detalles_productos 

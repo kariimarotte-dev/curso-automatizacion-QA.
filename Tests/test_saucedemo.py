@@ -77,3 +77,46 @@ def test_casos_4_al_10_verificacion_catalogo(driver):
     
     # Casos 8, 9 & 10: Validar elementos cruciales de la interfaz
     assert inventory_page.elementos_interfaz_presentes(), "Faltan elementos importantes en la interfaz (Carrito, Filtro o Botones)"
+
+def test_caso_11_filtro(driver):
+    login_page = SauceLoginPage(driver)
+    inventory_page = SauceInventoryPage(driver)
+    
+    # Paso previo: Loguearse para ver el catálogo
+    login_page.ingresar_a_la_web()
+    login_page.realizar_login("standard_user", "secret_sauce")
+    
+    # Caso 11: Verificar funcionalidad del filtro (Ordenar de A-Z)
+    inventory_page.aplicar_filtro("az")  # Método a implementar en SauceInventoryPage
+    
+    nombres_ordenados = inventory_page.obtener_nombres_productos()  
+    assert nombres_ordenados == sorted(nombres_ordenados), "Los productos no están ordenados alfabéticamente de A-Z"
+
+def test_caso_12_agregar_al_carrito(driver):
+    login_page = SauceLoginPage(driver)
+    inventory_page = SauceInventoryPage(driver)
+    
+    # Paso previo: Loguearse para ver el catálogo
+    login_page.ingresar_a_la_web()
+    login_page.realizar_login("standard_user", "secret_sauce")
+    
+    # Caso 12: Verificar que se pueda agregar un producto al carrito
+    inventory_page.agregar_primer_producto_al_carrito()  
+    
+    cantidad_en_carrito = inventory_page.obtener_cantidad_en_carrito()  
+    assert cantidad_en_carrito == 1, "El producto no se agregó correctamente al carrito"
+
+def test_caso_13_verificar_carrito(driver):
+    login_page = SauceLoginPage(driver)
+    inventory_page = SauceInventoryPage(driver)
+    
+    # Paso previo: Loguearse y agregar un producto al carrito
+    login_page.ingresar_a_la_web()
+    login_page.realizar_login("standard_user", "secret_sauce")
+    inventory_page.agregar_primer_producto_al_carrito()
+    
+    # Caso 13: Verificar que el carrito muestre el producto agregado
+    inventory_page.ir_al_carrito()  
+    
+    productos_en_carrito = inventory_page.obtener_productos_en_carrito()  
+    assert len(productos_en_carrito) == 1, "El carrito no muestra el producto agregado"
