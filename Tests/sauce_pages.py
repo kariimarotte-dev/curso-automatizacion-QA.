@@ -116,7 +116,6 @@ class SauceCartPage:
         self.continue_shopping_button = (By.ID, "continue-shopping")    
     def contar_productos_en_carrito(self):
         return len(self.driver.find_elements(*self.cart_items))
-
     def realizar_checkout(self):
         self.driver.find_element(*self.checkout_button).click()    
     def continuar_comprando(self):

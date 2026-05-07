@@ -2,7 +2,7 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from sauce_pages import SauceLoginPage, SauceInventoryPage
+from sauce_pages import SauceCartPage, SauceLoginPage, SauceInventoryPage
 
 @pytest.fixture
 def driver():
@@ -109,6 +109,7 @@ def test_caso_12_agregar_al_carrito(driver):
 def test_caso_13_verificar_carrito(driver):
     login_page = SauceLoginPage(driver)
     inventory_page = SauceInventoryPage(driver)
+    cart_page = SauceCartPage(driver)
     
     # Paso previo: Loguearse y agregar un producto al carrito
     login_page.ingresar_a_la_web()
@@ -118,5 +119,5 @@ def test_caso_13_verificar_carrito(driver):
     # Caso 13: Verificar que el carrito muestre el producto agregado
     inventory_page.ir_al_carrito()  
     
-    productos_en_carrito = inventory_page.obtener_productos_en_carrito()  
+    productos_en_carrito = cart_page.obtener_productos_en_carrito()  
     assert len(productos_en_carrito) == 1, "El carrito no muestra el producto agregado"
