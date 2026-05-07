@@ -95,6 +95,16 @@ class SauceInventoryPage:
         primer_producto.find_element(*self.add_to_cart_btn).click()
     def ir_al_carrito(self):
         self.driver.find_element(*self.shopping_cart).click()
+    def obtener_nombres_productos(self):
+        productos = self.driver.find_elements(*self.inventory_items)
+        nombres = [producto.find_element(By.CLASS_NAME, "inventory_item_name").text for producto in productos]
+        return nombres
+    def obtener_cantidad_en_carrito(self):
+            carrito = self.driver.find_element(*self.shopping_cart)
+            cantidad_texto = carrito.text
+            if cantidad_texto.isdigit():
+                return int(cantidad_texto)
+            return 0
 
 class SauceCartPage:
     def __init__(self, driver):
@@ -111,16 +121,6 @@ class SauceCartPage:
         self.driver.find_element(*self.checkout_button).click()    
     def continuar_comprando(self):
         self.driver.find_element(*self.continue_shopping_button).click()  
-    def obtener_nombres_productos(self):
-        productos = self.driver.find_elements(*self.inventory_items)
-        nombres = [producto.find_element(By.CLASS_NAME, "inventory_item_name").text for producto in productos]
-        return nombres 
-    def obtener_cantidad_en_carrito(self):
-            carrito = self.driver.find_element(*self.shopping_cart)
-            cantidad_texto = carrito.text
-            if cantidad_texto.isdigit():
-                return int(cantidad_texto)
-            return 0
     def obtener_productos_en_carrito(self):  
         productos = self.driver.find_elements(*self.cart_items)
         detalles_productos = []
